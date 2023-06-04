@@ -39,6 +39,18 @@ public class UIManager : MonoBehaviour
         game.SetActive(true);
     }
 
+    public void OpenSettings()
+    {
+        settings.SetActive(true);
+        menu.SetActive(false);
+    }
+
+    public void OpenTop()
+    {
+        top.SetActive(true);
+        menu.SetActive(false);
+    }
+
     public void SetPause(bool IsPause)
     {
         Time.timeScale = IsPause ? 1 : 0;
