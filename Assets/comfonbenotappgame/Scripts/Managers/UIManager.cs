@@ -18,6 +18,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject pause;
     [SerializeField] GameObject result;
 
+    private void Awake()
+    {
+        Box.OnCollisionAction += (ball) =>
+        {
+            Debug.Log(ball.Direction);
+        };
+    }
+
 
     private void Start()
     {
