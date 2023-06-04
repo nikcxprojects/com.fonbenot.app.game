@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Networking.UnityWebRequest;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,19 +8,15 @@ public class UIManager : MonoBehaviour
         get => FindObjectOfType<UIManager>(); 
     }
 
-    private int currentLevel;
     private GameObject _gameRef;
 
     [Space(10)]
     [SerializeField] GameObject menu;
-    [SerializeField] GameObject levels;
+    [SerializeField] GameObject settings;
+    [SerializeField] GameObject top;
     [SerializeField] GameObject game;
     [SerializeField] GameObject pause;
-    [SerializeField] GameObject win;
-    [SerializeField] GameObject lose;
-
-    [Space(10)]
-    [SerializeField] GameObject nextBtn;
+    [SerializeField] GameObject result;
 
 
     private void Start()
@@ -29,45 +24,24 @@ public class UIManager : MonoBehaviour
         OpenMenu();
     }
 
-    public void OpenLevels()
+    public void StartGame()
     {
-        menu.SetActive(false);
-        levels.SetActive(true);
-    }
-
-    public void OpenLevel(int levelID)
-    {
-        currentLevel = levelID;
+        Time.timeScale = 1;
 
         var _parent = GameObject.Find("Environment").transform;
-        var _prefab = Resources.Load<GameObject>($"levels/{levelID}");
+        var _prefab = Resources.Load<GameObject>("levels");
 
         _gameRef = Instantiate(_prefab, _parent);
-        var ball = Instantiate(Resources.Load<Ball>("ball"), _parent);
 
-        GameManager.Initalize(ball, _gameRef.GetComponent<Level>());
-
-        levels.SetActive(false);
-
-        win.SetActive(false);
-        lose.SetActive(false);
-
+        menu.SetActive(false);
+        result.SetActive(false);
+        
         game.SetActive(true);
-    }
-
-    public void TryAgain()
-    {
-        OpenLevel(currentLevel);
-    }
-
-    public void NextLevel()
-    {
-        currentLevel++;
-        OpenLevel(currentLevel);
     }
 
     public void SetPause(bool IsPause)
     {
+        Time.timeScale = IsPause ? 1 : 0;
         pause.SetActive(IsPause);
     }
 
@@ -79,32 +53,22 @@ public class UIManager : MonoBehaviour
         }
 
         game.SetActive(false);
+        settings.SetActive(false);
+        top.SetActive(false);
         pause.SetActive(false);
-        win.SetActive(false);
-        lose.SetActive(false);
-        levels.SetActive(false);
+        result.SetActive(false);
 
         menu.SetActive(true);
     }
 
-    public void GameOver(bool IsWin)
+    public void GameOver()
     {
         if (_gameRef)
         {
             Destroy(_gameRef);
         }
 
-        nextBtn.SetActive(currentLevel < 8);
-
-        if(IsWin)
-        {
-            win.SetActive(true);
-        }
-        else
-        {
-            lose.SetActive(true);
-        }
-
         game.SetActive(false);
+        result.SetActive(true);
     }
 }
