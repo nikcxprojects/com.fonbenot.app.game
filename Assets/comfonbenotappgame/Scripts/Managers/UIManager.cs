@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1;
 
         var _parent = GameObject.Find("Environment").transform;
-        var _prefab = Resources.Load<GameObject>("levels");
+        var _prefab = Resources.Load<GameObject>("level");
 
         _gameRef = Instantiate(_prefab, _parent);
 
@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour
 
     public void SetPause(bool IsPause)
     {
-        Time.timeScale = IsPause ? 1 : 0;
+        Time.timeScale = IsPause ? 0 : 1;
         pause.SetActive(IsPause);
     }
 

@@ -2,37 +2,26 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private static bool IsLaunch { get; set; }
-
     public static int direction;
+    private const float force = 3.0f;
 
-    private const float speed = 2.0f;
-    private const float upSpeed = 10.0f;
+    private Rigidbody2D Rigidbody { get; set; }
 
-    private void Start()
+    private void Awake()
     {
-        IsLaunch = false;
+        Rigidbody = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-        if(IsLaunch)
+        if(direction == 0)
         {
-            transform.Translate(Time.deltaTime * upSpeed * Vector2.up);
-            return;
+            Rigidbody.angularVelocity = 0;
         }
-
-        var x = transform.position.x + (direction * speed * Time.deltaTime);
-        if(x < -1.772f || x > 1.772f)
-        {
-            return;
-        }
-
-        transform.position = new Vector2(x, transform.position.y);
     }
 
-    public static void Launch()
+    private void FixedUpdate()
     {
-        IsLaunch = true;
+        Rigidbody.AddTorque(direction * force);
     }
 }
