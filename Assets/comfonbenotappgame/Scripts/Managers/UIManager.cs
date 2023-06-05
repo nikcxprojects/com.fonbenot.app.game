@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
         get => FindObjectOfType<UIManager>(); 
     }
 
+    private int score;
     private GameObject _gameRef;
 
     [Space(10)]
@@ -18,11 +19,26 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject pause;
     [SerializeField] GameObject result;
 
+    [Space(10)]
+    [SerializeField] Text scoreText;
+    [SerializeField] Text finalScoreText;
+
     private void Awake()
     {
-        Box.OnCollisionAction += (ball) =>
+        Box.OnCollisionAction += (ball, boxDirection) =>
         {
-            Debug.Log(ball.Direction);
+            var trueDirection = ball.Direction == boxDirection;
+            if(trueDirection)
+            {
+                score++;
+
+                scoreText.text = $"{score}";
+                finalScoreText.text = $"<size=50><color=#17263D>SCORE</color></size>\r\n<color=#D42A28>{score}</color>";
+            }
+            else
+            {
+                GameOver();
+            }
         };
     }
 
@@ -35,6 +51,11 @@ public class UIManager : MonoBehaviour
     public void StartGame()
     {
         Time.timeScale = 1;
+
+        score = 0;
+
+        scoreText.text = $"{score}";
+        finalScoreText.text = $"<size=50><color=#17263D>SCORE</color></size>\r\n<color=#D42A28>{score}</color>";
 
         var _parent = GameObject.Find("Environment").transform;
         var _prefab = Resources.Load<GameObject>("level");

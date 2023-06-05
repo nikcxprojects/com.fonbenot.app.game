@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class Box : MonoBehaviour
 {
-    public static Action<Ball> OnCollisionAction { get; set; }
+    [SerializeField] int selfDirection;
+    public static Action<Ball, int> OnCollisionAction { get; set; }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        OnCollisionAction?.Invoke(collision.GetComponent<Ball>());
+        OnCollisionAction?.Invoke(collision.GetComponent<Ball>(), selfDirection);
         Destroy(collision.gameObject);
     }
 }

@@ -23,7 +23,7 @@ public class Generator : MonoBehaviour
             ball.transform.localPosition = new Vector2(0.0f, 7.5f);
             ball.name = ballPrefab.name;
 
-            yield return new WaitForSeconds(1.8f);
+            yield return new WaitForSeconds(3);
         }
     }
 }
